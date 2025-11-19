@@ -1,0 +1,18 @@
+const bushCatalog =[
+    {id: 1, name: "Теневой раб", chapter:2715},
+    {id: 2, name: "Повелитель тайн", chapter:1430},
+    {id: 3, name: "Мать Ученье", chapter:106},
+    {id: 4, name: "Начало после конца", chapter:457},
+    {id: 5, name: "Злодей хочет жить", chapter:313},
+];
+
+console.log("Название ранобе:", bushCatalog);
+
+function findBushById(id:number) {
+    return bushCatalog.find(bush => bush.id === id);
+}
+console.log("Результат поиска")
+console.log(findBushById(4))
+console.log(findBushById(5))
+console.log(findBushById(3))
+console.log(findBushById(199))
