@@ -1,0 +1,43 @@
+import hre from "hardhat";
+
+const xs =async () => {
+    const red = await hre.ethers.getSigners();
+    const MyToken1 = await hre.ethers.getContractFactory("MyToken");
+    const MyToken2 = await MyToken1.connect(red[0]).deploy(100);
+    console.log(await MyToken2 .totalSupply());
+    console.log(await MyToken2.getAddress());
+
+
+    await MyToken2.transfer(red[1],1000000);
+    console.log(await MyToken2.balanceOf(red[1]));
+
+
+    console.log("BALANCES BEFORE TRANSFER")
+    console.log("Account 2" + await MyToken2.balanceOf(red[1]));
+    console.log("Account 1" + await MyToken2.balanceOf(red[0]));
+
+
+    await MyToken2.connect(red[1]).transfer(red[0],100);
+    console.log("BALANCES AFTER TRANSFER")
+    console.log("Account 2" + await MyToken2.balanceOf(red[1]));
+    console.log("Account 1" + await MyToken2.balanceOf(red[0]));
+
+
+    await MyToken2.connect(red[0]).approve(red[1],100000);
+    console.log("BALANCES AFTER APPROVE")
+    console.log("Account 2" + await MyToken2.balanceOf(red[1]));
+    console.log("Account 1" + await MyToken2.balanceOf(red[0]));
+
+    await MyToken2.connect(red[0]).alowance(red[1],red[0]);
+    console.log("BALANCES AFTER ALOWANCE")
+    console.log("Account 2" + await MyToken2.balanceOf(red[1]));
+    console.log("Account 1" + await MyToken2.balanceOf(red[0]));
+
+     await MyToken2.connect(red[1]).transferFrom(red[0],red[1],100);
+    console.log("BALANCES AFTER TRANSFERFROM")
+    console.log("Account 2" + await MyToken2.balanceOf(red[1]));
+    console.log("Account 1" + await MyToken2.balanceOf(red[0]));
+
+}
+
+xs()
