@@ -1,0 +1,17 @@
+  let bushCatalog = [
+        {id: 1, name: "сирень", price: 100},
+        {id: 2, name: "жасмин", price: 120},
+        {id: 3, name: "шиповник", price: 150},
+        {id: 4, name: "подснежник", price: 250},
+        {id: 5, name: "одуванчик", price: 80}
+    ];
+
+    function applyDiscount(discountPercentage: number) {
+        for (let i = 0; i < bushCatalog.length; i++) {
+           let bush = bushCatalog[i];
+           let discountMultiplier = 1 - discountPercentage /100 ;
+           bush.price = bush.price * discountMultiplier;
+        }
+        console.log(bushCatalog);
+}
+applyDiscount(20)
