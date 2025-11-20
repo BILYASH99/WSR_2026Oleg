@@ -1,0 +1,34 @@
+enum Rarity {
+    Com = "Common",
+    Rar = "Rare",
+    Legend = "Legendary",
+}
+class bush {
+    Id: number;
+    name: string;
+    age: number;
+    rarity: Rarity;
+    isSold: boolean;
+
+    constructor(Id:number, name: string, age: number, Rarity: Rarity, isSold: boolean) {
+        this.Id = Id;
+        this.name = name;
+        this.age = age;
+        this.rarity = Rarity;
+        this.isSold = false;
+    }
+    getInfo(): string {
+        const statys= this.isSold ? 'Продано' : "В продаже";
+        return `ID: ${this.Id}, Имя: ${this.name}, Возраст: ${this.age}, Редкость: ${this.rarity}, Статус: ${status}`;
+    }
+
+    sell(): void {
+        this.isSold=true;
+    }
+}
+let m1 = new Monkey(1, "Ниггадяй", 52, Rarity.Com );
+let m2 = new Monkey(2, "Скупердяй", 69, Rarity.Rar );
+let m3 = new  Monkey(3, "Заклодопакаватель", 133, Rarity.Legend );
+console.log(m1.getInfo());
+console.log(m2.getInfo());
+console.log(m3.getInfo());
