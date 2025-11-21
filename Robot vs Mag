@@ -86,70 +86,38 @@ market.addMonkey(m3);
 market.addMonkey(m4);
 
 
-class Robotmonkey  {
-    id: number;
-    name: string;
-    age: number;
-    rarity: Rarity;
-    isSold: boolean = false;
-    price: number;
+class RobotMonkey extends monkey {
     chipVersion: number;
 
     constructor(id: number, name: string, age: number, rarity: Rarity, price: number, chipVersion: number) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.rarity = rarity;
-        this.price = price;
+        super(id, name, age, rarity, price);
         this.chipVersion = chipVersion;
     }
-    getInfo(): string {
-        const status = this.isSold ? "Продано" : "В продаже";
-        return `ID: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}, Редкость: ${this.rarity}, Цена: ${this.price},Версия чипа: ${this.chipVersion}, Статус: ${status},`;
-    }
 
-    sell() {
-        if (!this.isSold) {
-            this.isSold = true;
-        }
+    getInfo(): string {
+        return `${super.getInfo()}, Мана: ${this.chipVersion}`;
     }
 }
 console.log("МАКАКИ РОБОТЫ")
-let r1 = new Robotmonkey(1, "Чипированный", 228, Rarity.Rare, 5623651, 232.2);
+let r1 = new RobotMonkey(1, "Чипированный", 228, Rarity.Rare, 5623651, 232.2);
 console.log(r1.getInfo());
 market.addMonkey(r1);
 
-class Magicmonkey  {
-    id: number;
-    name: string;
-    age: number;
-    rarity: Rarity;
-    isSold: boolean = false;
-    price: number;
+class MagicMonkey extends monkey {
     manaPool: number;
 
     constructor(id: number, name: string, age: number, rarity: Rarity, price: number, manaPool: number) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.rarity = rarity;
-        this.price = price;
+        super(id, name, age, rarity, price);
         this.manaPool = manaPool;
     }
-    getInfo(): string {
-        const status = this.isSold ? "Продано" : "В продаже";
-        return `ID: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}, Редкость: ${this.rarity}, Цена: ${this.price},Количество маны: ${this.manaPool}, Статус: ${status},`;
-    }
 
-    sell() {
-        if (!this.isSold) {
-            this.isSold = true;
-        }
+    getInfo(): string {
+        return `${super.getInfo()}, Мана: ${this.manaPool}`;
     }
 }
 
 console.log("МАКАКИ МАГИ")
-let M1 = new Magicmonkey(1, "Маг воды 1 уровня", 22, Rarity.Common, 5651, 22);
+let M1 = new MagicMonkey(1, "Маг воды 1 уровня", 22, Rarity.Common, 5651, 22);
 M1.sell();
 console.log(M1.getInfo());
 market.addMonkey(M1);
