@@ -1,34 +1,45 @@
+//import {boolean, string} from "hardhat/internal/core/params/argumentTypes";
+
 enum Rarity {
-    Com = "Common",
-    Rar = "Rare",
-    Legend = "Legendary",
+    Common = "Common",
+    Rare = "Rare",
+    Legendary = "Legendary"
 }
-class bush {
-    Id: number;
+
+class monkey  {
+    id: number;
     name: string;
     age: number;
     rarity: Rarity;
-    isSold: boolean;
+    isSold: boolean = false;
+    price: number;
 
-    constructor(Id:number, name: string, age: number, Rarity: Rarity, isSold: boolean) {
-        this.Id = Id;
+    constructor(id: number, name: string, age: number, rarity: Rarity, price: number) {
+        this.id = id;
         this.name = name;
         this.age = age;
-        this.rarity = Rarity;
-        this.isSold = false;
+        this.rarity = rarity;
+        this.price = price;
     }
     getInfo(): string {
-        const statys= this.isSold ? 'Продано' : "В продаже";
-        return `ID: ${this.Id}, Имя: ${this.name}, Возраст: ${this.age}, Редкость: ${this.rarity}, Статус: ${status}`;
+        const status = this.isSold ? "Продано" : "В продаже";
+        return `ID: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}, Редкость: ${this.rarity}, Цена: ${this.price}, Статус: ${status}`;
     }
 
-    sell(): void {
-        this.isSold=true;
+    sell() {
+        if (!this.isSold) {
+            this.isSold = true;
+        }
     }
 }
-let m1 = new Monkey(1, "Ниггадяй", 52, Rarity.Com );
-let m2 = new Monkey(2, "Скупердяй", 69, Rarity.Rar );
-let m3 = new  Monkey(3, "Заклодопакаватель", 133, Rarity.Legend );
+
+console.log("МАКАКИ");
+let m1 = new monkey(1, "САПОРТИЩЕ", 19, Rarity.Common, 10);
+let m2 = new monkey(2, "Никитка", 18, Rarity.Common, 13123);
+let m3 = new monkey(3, "DewCod", 2007, Rarity.Rare, 126896);
+let m4 = new monkey(4, "Bilaysh", 2, Rarity.Legendary, 98345677654);
+
 console.log(m1.getInfo());
 console.log(m2.getInfo());
 console.log(m3.getInfo());
+console.log(m4.getInfo());
