@@ -1,0 +1,86 @@
+//import {boolean, string} from "hardhat/internal/core/params/argumentTypes";
+
+enum Rarity {
+    Common = "Common",
+    Rare = "Rare",
+    Legendary = "Legendary"
+}
+
+class monkey  {
+    id: number;
+    name: string;
+    age: number;
+    rarity: Rarity;
+    isSold: boolean = false;
+    price: number;
+
+    constructor(id: number, name: string, age: number, rarity: Rarity, price: number) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.rarity = rarity;
+        this.price = price;
+    }
+    getInfo(): string {
+        const status = this.isSold ? "продана" : "в продаже";
+        return `ID: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}, Редкость: ${this.rarity}, Цена: ${this.price}, Статус: ${status}`;
+    }
+
+    sell() {
+        if (!this.isSold) {
+            this.isSold = true;
+        }
+    }
+}
+class MonkeyMarket {
+    private monkeys: monkey[] = [];
+
+    addMonkey(monkey: monkey): void {
+        this.monkeys.push(monkey);
+    }
+
+    getAllMonkeys(): monkey[] {
+        return this.monkeys;
+    }
+
+    getAvailableMonkeys(): monkey[] {
+        return this.monkeys.filter(monkey => !monkey.isSold);
+    }
+    buyMonkey(id: number): void {
+        const monkey = this.monkeys.find(monkey => monkey.id === id);
+        if (!monkey) {
+            console.log(`Мартышка с id ${id} не найдена.`);
+            return;
+        }
+        if (monkey.isSold) {
+            console.log(`Мартышка с id ${id} уже продана.`);
+            return;
+        }
+        monkey.sell();
+        console.log(`Вы успешно купили мартышку с id ${id}.`);
+    }
+}
+
+console.log("МАКАКИ");
+let m1 = new monkey(1, "САПОРТИЩЕ", 19, Rarity.Common, 10);
+let m2 = new monkey(2, "Никитка", 18, Rarity.Common, 13123);
+let m3 = new monkey(3, "DewCod", 2007, Rarity.Rare, 126896);
+let m4 = new monkey(4, "Bilaysh", 2, Rarity.Legendary, 98345677654);
+
+
+
+
+m1.sell();
+console.log(m1.getInfo());
+console.log(m2.getInfo());
+console.log(m3.getInfo());
+console.log(m4.getInfo());
+
+
+
+const market = new MonkeyMarket();
+
+market.addMonkey(m1);
+market.addMonkey(m2);
+market.addMonkey(m3);
+market.addMonkey(m3);
