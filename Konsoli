@@ -1,0 +1,50 @@
+import * as readline from 'readline'
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+})
+
+function showMenu(){
+    console.log(`
+    Добро пожаловать в наш киоск!
+    1 - Узнать цену на мартышку
+    2 - Узнать время работы
+    3 - Получить смешной факт о мартышках
+    4 - Выйти
+    `);
+}
+
+function handleCommand(command:string){
+    switch(command.trim()){
+        case '1':
+            console.log("Редкая мартышка стоит 100 бананов.");
+            console.log("Обычная мартышка стоит 50 бананов.");
+            console.log("Легендарная мартышка стоит 150 бананов.");
+            console.log("Робот мартышка временно не продается, так как все еще не прошла проверку.");
+            console.log("Магическая мартышка стоит 3 камня маны.");
+            break;
+            case '2':
+                console.log("Мы работаем круглосуточно! Кроме субботы и воскресенья, в эти дни смена с 8:00 до 20:30");
+            break;
+            case '3':
+                console.log("Мартышки могут узнавать себя в зеркале.");
+                console.log("Кибер мартышки умеют убираться в доме.");
+                console.log("Маги мартышки могут использовать магию.");
+                break;
+                case '4':
+                    console.log("До свидания! Хорошего дня");
+                    rl.close();
+                    return;
+                    default:
+                        console.log("Неверная команда, попробуйте снова!");
+    }
+    promptUser();
+}
+
+function promptUser(){
+    showMenu();
+    rl.question('Введите команду:', handleCommand);
+}
+
+promptUser();
