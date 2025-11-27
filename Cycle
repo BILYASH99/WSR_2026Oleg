@@ -2,8 +2,8 @@ function calculateTotalChapter(shoppingList: string[]): number {
     let total = 0;
 
     for (let i = 0; i < shoppingList.length; i++) {
-        const bushName = shoppingList[i];
-        const chapter = getBushChapter(bushName);
+        const litName = shoppingList[i];
+        const chapter = getLitChapter(litName);
 
         if (chapter !== null) {
             total += chapter;
@@ -11,17 +11,17 @@ function calculateTotalChapter(shoppingList: string[]): number {
     }
     return total;
 
-    function getBushChapter(name: string): number {
-        const bushCatalog = [
+    function getLitChapter(name: string): number {
+        const litCatalog = [
             {id: 1, name: "Теневой раб", chapter:2715},
             {id: 2, name: "Повелитель тайн", chapter:1430},
             {id: 3, name: "Мать Ученье", chapter:106},
             {id: 4, name: "Начало после конца", chapter:457},
             {id: 5, name: "Злодей хочет жить", chapter:313},
     ];
-        for (let i = 0; i < bushCatalog.length; i++) {
-            if (bushCatalog[i].name === name) {
-                return bushCatalog[i].chapter;
+        for (let i = 0; i < litCatalog.length; i++) {
+            if (litCatalog[i].name === name) {
+                return litCatalog[i].chapter;
             }
         }
         return 0;
