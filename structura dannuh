@@ -1,4 +1,4 @@
-const bushCatalog =[
+const chapterCatalog =[
     {id: 1, name: "Теневой раб", chapter:2715},
     {id: 2, name: "Повелитель тайн", chapter:1430},
     {id: 3, name: "Мать Ученье", chapter:106},
@@ -6,13 +6,58 @@ const bushCatalog =[
     {id: 5, name: "Злодей хочет жить", chapter:313},
 ];
 
-console.log("Название ранобе:", bushCatalog);
+console.log("Название ранобе:", chapterCatalog);
 
-function findBushById(id:number) {
-    return bushCatalog.find(bush => bush.id === id);
+function findChapterById(id:number) {
+    return chapterCatalog.find(chapter => chapter.id === id);
 }
 console.log("Результат поиска")
-console.log(findBushById(4))
-console.log(findBushById(5))
-console.log(findBushById(3))
-console.log(findBushById(199))
+console.log(findChapterById(4))
+console.log(findChapterById(5))
+console.log(findChapterById(3))
+console.log(findChapterById(199))
+
+
+Теперь структура данных + ООП
+
+class Chapter {
+    constructor(
+        public id: number,
+        public name: string,
+        public chapter: number
+    ) {}
+}
+
+class ChapterCatalog {
+    private chapters: Chapter[] = [];
+
+    constructor(chaptersData: {id: number, name: string, chapter: number}[]) {
+        this.chapters = chaptersData.map(data => new Chapter(data.id, data.name, data.chapter));
+    }
+
+    findChapterById(id: number): Chapter | undefined {
+        return this.chapters.find(chapter => chapter.id === id);
+    }
+
+    getAllChapters(): Chapter[] {
+        return this.chapters;
+    }
+}
+
+const chapterCatalogData = [
+    {id: 1, name: "Теневой раб", chapter: 2715},
+    {id: 2, name: "Повелитель тайн", chapter: 1430},
+    {id: 3, name: "Мать Ученье", chapter: 106},
+    {id: 4, name: "Начало после конца", chapter: 457},
+    {id: 5, name: "Злодей хочет жить", chapter: 313},
+];
+
+const catalog = new ChapterCatalog(chapterCatalogData);
+
+console.log("Все главы:", catalog.getAllChapters());
+
+console.log("Результат поиска");
+console.log(catalog.findChapterById(4));
+console.log(catalog.findChapterById(5));
+console.log(catalog.findChapterById(3));
+console.log(catalog.findChapterById(199));
