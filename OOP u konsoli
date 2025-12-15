@@ -1,0 +1,230 @@
+import * as readline from 'readline';
+import {boolean, string} from "hardhat/internal/core/params/argumentTypes";
+
+enum Rarity {
+    Common = "Common",
+    Rare = "Rare",
+    Legendary = "Legendary"
+}
+
+class monkey  {
+    id: number;
+    name: string;
+    age: number;
+    rarity: Rarity;
+    isSold: boolean = false;
+    price: number;
+
+    constructor(id: number, name: string, age: number, rarity: Rarity, price: number) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.rarity = rarity;
+        this.price = price;
+    }
+    getInfo(): string {
+        const status = this.isSold ? "Продано" : "В продаже";
+        return `ID: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}, Редкость: ${this.rarity}, Цена: ${this.price}, Статус: ${status}`;
+    }
+
+    sell() {
+        if (!this.isSold) {
+            this.isSold = true;
+        }
+    }
+}
+class MonkeyMarket {
+    private monkeys: monkey[] = [];
+
+    addMonkey(monkey: monkey): void {
+        this.monkeys.push(monkey);
+    }
+
+    getAllMonkeys(): monkey[] {
+        return this.monkeys;
+    }
+
+    getAvailableMonkeys(): monkey[] {
+        return this.monkeys.filter(monkey => !monkey.isSold);
+    }
+    buyMonkey(id: number): void {
+        const monkey = this.monkeys.find(monkey => monkey.id === id);
+        if (!monkey) {
+            console.log(`Мартышка с id ${id} не найдена.`);
+            return;
+        }
+        if (monkey.isSold) {
+            console.log(`Мартышка с id ${id} уже продана.`);
+            return;
+        }
+        monkey.sell();
+        console.log(`Вы успешно купили мартышку с id ${id}.`);
+    }
+}let m1 = new monkey(1, "САПОРТИЩЕ", 19, Rarity.Common, 10);
+let m2 = new monkey(2, "Никитка", 18, Rarity.Common, 13123);
+let m3 = new monkey(3, "DewCod", 2007, Rarity.Rare, 126896);
+let m4 = new monkey(4, "Bilaysh", 2, Rarity.Legendary, 98345677654);
+
+m1.sell();
+
+const market = new MonkeyMarket();
+
+market.addMonkey(m1);
+market.addMonkey(m2);
+market.addMonkey(m3);
+market.addMonkey(m4);
+
+class RobotMonkey extends monkey {
+    chipVersion: number;
+
+    constructor(id: number, name: string, age: number, rarity: Rarity, price: number, chipVersion: number) {
+        super(id, name, age, rarity, price);
+        this.chipVersion = chipVersion;
+    }
+
+    getInfo(): string {
+        return `${super.getInfo()}, Версия Чипа: ${this.chipVersion}`;
+    }
+}
+let r5 = new RobotMonkey(1, "Чипированный", 228, Rarity.Rare, 5623651, 232.2);
+market.addMonkey(r5);
+
+class MagicMonkey extends monkey {
+    manaPool: number;
+
+    constructor(id: number, name: string, age: number, rarity: Rarity, price: number, manaPool: number) {
+        super(id, name, age, rarity, price);
+        this.manaPool = manaPool;
+    }
+
+    getInfo(): string {
+        return `${super.getInfo()}, Мана: ${this.manaPool}`;
+    }
+}
+
+let M6 = new MagicMonkey(1, "Маг воды 1 уровня", 22, Rarity.Common, 5651, 22);
+M6.sell();
+market.addMonkey(M6);
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+let newMonkeyData: any = {}; // временное хранение данных
+
+function handleAddMonkey() {
+    // шаги по очереди
+    rl.question('Введите имя мартышки:', (name) => {
+        newMonkeyData.name = name;
+        rl.question('Введите возраст:', (ageStr) => {
+            const age = parseInt(ageStr);
+            if (isNaN(age)) {
+                console.log('Некорректный возраст.');
+                currentStep = 'main';
+                promptUser();
+                return;
+            }
+            newMonkeyData.age = age;
+            rl.question('Введите редкость (Common, Rare, Legendary):', (rarityStr) => {
+                if (!Object.values(Rarity).includes(rarityStr as Rarity)) {
+                    console.log('Некорректная редкость.');
+                    currentStep = 'main';
+                    promptUser();
+                    return;
+                }
+                newMonkeyData.rarity = rarityStr as Rarity;
+                rl.question('Введите цену:', (priceStr) => {
+                    const price = parseFloat(priceStr);
+                    if (isNaN(price)) {
+                        console.log('Некорректная цена.');
+                        currentStep = 'main';
+                        promptUser();
+                        return;
+                    }
+                    newMonkeyData.price = price;
+
+                    // Создать новый monkey и добавить
+                    const newId = market.getAllMonkeys().length + 1; // или другой способ определения ID
+                    const newMonkey = new monkey(
+                        newId,
+                        newMonkeyData.name,
+                        newMonkeyData.age,
+                        newMonkeyData.rarity,
+                        newMonkeyData.price
+                    );
+                    market.addMonkey(newMonkey);
+                    console.log('Марташка успешно добавлена!');
+                    currentStep = 'main';
+                    newMonkeyData = {}; // очистить
+                    promptUser();
+                });
+            });
+        });
+    });
+}
+
+let currentStep = 'main'; // текущий этап/режим
+
+function showMainMenu() {
+    console.log(`
+    Добро пожаловать в наш киоск!
+    1 - Добавить новую мартушку
+    2 - Показать всех доступных мартышек
+    3 - Продать мартышку по ID
+    4 - Exit
+    `);
+}
+
+
+function handleMainMenu(command: string) {
+    switch (command.trim()) {
+        case '1':
+            currentStep = 'addMonkey';
+            break;
+        case '2':
+            market.getAllMonkeys().forEach(monkey => console.log(monkey.getInfo()));
+            break;
+        case '3':
+            rl.question('Введите ID мартышки для продажи:', handleSellMonkeyID);
+            return;
+        case '4':
+            console.log('Выход из программы.');
+            rl.close();
+            return;
+        default:
+            console.log("Неверная команда, попробуйте снова!");
+            break;
+    }
+    promptUser();
+}
+
+function handleAddMonkeyName(name: string) {
+    console.log(`Добавлена новая мартышка: ${name}`);
+    currentStep = 'main';
+    promptUser();
+}
+
+function handleSellMonkeyID(idStr: string) {
+    const id = parseInt(idStr);
+    if (isNaN(id)) {
+        console.log('Некорректный ID.');
+        promptUser();
+        return;
+    }
+    market.buyMonkey(id);
+    promptUser();
+}
+
+function promptUser() {
+    if (currentStep === 'main') {
+        showMainMenu();
+        rl.question('Введите команду:', handleMainMenu);
+    } else if (currentStep === 'addMonkey') {
+        handleAddMonkey();
+    } else if (currentStep === 'sellMonkeyID') {
+        rl.question('ID мартышки:', handleSellMonkeyID);
+    }
+}
+
+promptUser();
